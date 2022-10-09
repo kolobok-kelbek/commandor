@@ -1,0 +1,15 @@
+
+touch:
+  tags:
+    - file
+  description: create new file with some data
+  command: touch file.txt && echo "hello world" > file.txt && cat file.txt | grep hello && rm file.txt
+  shortCmd: t
+  shortcut: t
+
+go-run:
+  tags:
+    - golang
+  description: run golang built application
+  command: go run main.go
+  shortCmd: gr
