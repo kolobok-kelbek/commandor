@@ -1,11 +1,12 @@
-package main
+package config
 
 import (
 	"flag"
-	"github.com/pkg/errors"
-	"gopkg.in/yaml.v3"
 	"log"
 	"os"
+
+	"github.com/pkg/errors"
+	"gopkg.in/yaml.v3"
 )
 
 const env = "COMMANDOR_CONFIG"
@@ -13,7 +14,7 @@ const env = "COMMANDOR_CONFIG"
 var defaultsExtensions = [...]string{"yaml", "yml"}
 var defaultsNames = [...]string{"commands", "cmds"}
 
-func configFind() (string, error) {
+func ConfigFind() (string, error) {
 	config := flag.String("config", "", "path for commands file")
 	flag.Parse()
 
@@ -50,10 +51,10 @@ func configFind() (string, error) {
 	return path, nil
 }
 
-func configLoad() (commands, error) {
-	cmds := commands{}
+func ConfigLoad() (Commands, error) {
+	cmds := Commands{}
 
-	fileName, err := configFind()
+	fileName, err := ConfigFind()
 	if err != nil {
 		return cmds, errors.Wrap(err, "find file error")
 	}

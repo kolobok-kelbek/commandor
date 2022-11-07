@@ -1,8 +1,8 @@
-package main
+package config
 
-type commands map[string]command
+type Commands map[string]Command
 
-type command struct {
+type Command struct {
 	Title       string
 	Description string
 	Command     string

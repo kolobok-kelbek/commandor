@@ -1,4 +1,4 @@
-package main
+package execute
 
 import (
 	"fmt"
@@ -6,7 +6,7 @@ import (
 	"os/exec"
 )
 
-func execute(command string) {
+func Execute(command string) {
 	bashExecPath, err := exec.LookPath("bash")
 	if err != nil {
 		log.Fatal(err)
