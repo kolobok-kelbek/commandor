@@ -1,7 +1,6 @@
 package config
 
 import (
-	"flag"
 	"log"
 	"os"
 
@@ -14,25 +13,19 @@ const env = "COMMANDOR_CONFIG"
 var defaultsExtensions = [...]string{"yaml", "yml"}
 var defaultsNames = [...]string{"commands", "cmds"}
 
-func ConfigFind() (string, error) {
-	config := flag.String("config", "", "path for commands file")
-	flag.Parse()
-
-	if config == nil || *config == "" {
-		env := os.Getenv(env)
-		config = &env
+func ConfigFind(config string) (string, error) {
+	if config == "" {
+		config = os.Getenv(env)
 	}
 
-	path := *config
-
-	if path == "" {
+	if config == "" {
 		for _, name := range defaultsNames {
 			for _, extension := range defaultsExtensions {
-				path = name + "." + extension
+				config = name + "." + extension
 
-				_, err := os.Stat(path)
+				_, err := os.Stat(config)
 				if err == nil {
-					return path, nil
+					return config, nil
 				}
 
 				if !errors.Is(err, os.ErrNotExist) {
@@ -43,18 +36,18 @@ func ConfigFind() (string, error) {
 
 		return "", errors.New("file not found")
 	} else {
-		if _, err := os.Stat(path); errors.Is(err, os.ErrNotExist) {
+		if _, err := os.Stat(config); errors.Is(err, os.ErrNotExist) {
 			return "", err
 		}
 	}
 
-	return path, nil
+	return config, nil
 }
 
-func ConfigLoad() (Commands, error) {
+func ConfigLoad(config string) (Commands, error) {
 	cmds := Commands{}
 
-	fileName, err := ConfigFind()
+	fileName, err := ConfigFind(config)
 	if err != nil {
 		return cmds, errors.Wrap(err, "find file error")
 	}

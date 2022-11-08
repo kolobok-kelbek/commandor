@@ -10,19 +10,22 @@ import (
 	"github.com/spf13/cobra"
 )
 
+const env = "COMMANDOR_CONFIG"
+
 var rootCmd = &cobra.Command{
 	Use:   "commandor",
 	Short: "Command Management System",
-	Long: `Commandor is command management system. This system help for management commands in your project.`,
+	Long:  `Commandor is command management system. This system help for management commands in your project.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		cmds, err := config.ConfigLoad()
+		configPath, _ := cmd.Flags().GetString("config")
+		cmds, err := config.ConfigLoad(configPath)
 		if err != nil {
 			log.Fatal(err)
 		}
 
 		command := ""
-		if len(os.Args) > 1 {
-			command = os.Args[1]
+		if len(args) > 0 {
+			command = args[0]
 		}
 
 		if command != "" {
@@ -73,7 +76,5 @@ func Execute() {
 }
 
 func init() {
-	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	rootCmd.Flags().StringP("config", "c", os.Getenv(env), "Path for commands file")
 }
-
-
