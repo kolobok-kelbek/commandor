@@ -16,9 +16,16 @@ var rootCmd = &cobra.Command{
 	Use:   "commandor",
 	Short: "Command Management System",
 	Long:  `Commandor is command management system. This system help for management commands in your project.`,
+	Args: func(cmd *cobra.Command, args []string) error {
+		if err := cobra.MaximumNArgs(1)(cmd, args); err != nil {
+			return err
+		}
+
+		return nil
+	},
 	Run: func(cmd *cobra.Command, args []string) {
 		configPath, _ := cmd.Flags().GetString("config")
-		cmds, err := config.ConfigLoad(configPath)
+		cmds, err := config.Load(configPath)
 		if err != nil {
 			log.Fatal(err)
 		}
