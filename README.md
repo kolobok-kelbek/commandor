@@ -35,7 +35,7 @@ commandor up --config /your_project
 
 For this using bash script:
 ```BASH
-./runInterfrationTests.sh
+./run_Integration_tests.sh
 ```
 
 ### Commands config example
